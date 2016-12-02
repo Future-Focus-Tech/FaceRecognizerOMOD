@@ -10,8 +10,6 @@
     <packaging>pom</packaging>
     <name>Face Recognizer Module</name>
     <description>Patient Identification</description>
-    <url>https://wiki.openmrs.org/display/docs/Face+Recognizer+Module+Module
-    </url>
 
     <developers>
         <developer>
@@ -24,16 +22,6 @@
         <url>http://openmrs.org</url>
     </organization>
 
-    <scm>
-        <connection>
-            scm:svn:https://svn.openmrs.org/openmrs-modules/facerecognizer/trunk/
-        </connection>
-        <developerConnection>
-            scm:svn:https://svn.openmrs.org/openmrs-modules/facerecognizer/trunk/
-        </developerConnection>
-        <url>https://svn.openmrs.org/openmrs-modules/facerecognizer/trunk/</url>
-    </scm>
-
     <modules>
         <module>api</module>
         <module>omod</module>
@@ -44,41 +32,23 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <!--<dependencies>-->
-    <!--<dependency>-->
-    <!--<groupId>org.bytedeco</groupId>-->
-    <!--<artifactId>javacpp</artifactId>-->
-    <!--<version>1.2.5</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--<groupId>org.bytedeco</groupId>-->
-    <!--<artifactId>javacv</artifactId>-->
-    <!--<version>1.2</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-    <!--<groupId>org.springframework</groupId>-->
-    <!--<artifactId>spring-webmvc</artifactId>-->
-    <!--<version>4.1.6.RELEASE</version>-->
-    <!--</dependency>-->
-    <!--</dependencies>-->
-
     <dependencyManagement>
         <dependencies>
-            <dependency>
-                <groupId>org.bytedeco</groupId>
-                <artifactId>javacpp</artifactId>
-                <version>1.2.5</version>
-            </dependency>
-            <dependency>
-                <groupId>org.bytedeco</groupId>
-                <artifactId>javacv</artifactId>
-                <version>1.2</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>4.1.6.RELEASE</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.bytedeco</groupId>-->
+                <!--<artifactId>javacpp</artifactId>-->
+                <!--<version>1.2.5</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.bytedeco</groupId>-->
+                <!--<artifactId>javacv</artifactId>-->
+                <!--<version>1.2</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.springframework</groupId>-->
+                <!--<artifactId>spring-webmvc</artifactId>-->
+                <!--<version>4.1.6.RELEASE</version>-->
+            <!--</dependency>-->
 
 
             <!-- Begin OpenMRS core -->

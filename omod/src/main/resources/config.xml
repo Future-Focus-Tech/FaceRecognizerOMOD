@@ -2,52 +2,68 @@
 
 <module configVersion="1.2">
 
-	<!-- Module Properties -->
-	<id>${project.parent.artifactId}</id>
-	<name>${project.parent.name}</name>
-	<version>${project.parent.version}</version>
-	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
-	<author>saikiran</author>
-	<description>
-		${project.parent.description}
-	</description>
-	<updateURL>https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf</updateURL>
-	<require_version>${openMRSVersion}</require_version>
-	<!-- / Module Properties -->
+    <!-- Module Properties -->
+    <id>${project.parent.artifactId}</id>
+    <name>${project.parent.name}</name>
+    <version>${project.parent.version}</version>
+    <package>${project.parent.groupId}.${project.parent.artifactId}</package>
+    <author>saikiran</author>
+    <description>
+        ${project.parent.description}
+    </description>
+    <updateURL>
+        https://modules.openmrs.org/modules/download/${project.parent.artifactId}/update.rdf
+    </updateURL>
+    <require_version>${openMRSVersion}</require_version>
+    <!-- / Module Properties -->
+    <!-- Dependent modules -->
+    <require_modules>
+        <require_module version="${bahmniVersion}">
+            org.bahmni.module.bahmnicore
+        </require_module>
+    </require_modules>
 
-	
-	<!-- Module Activator -->
-	<activator>${project.parent.groupId}.${project.parent.artifactId}.FaceRecognizerActivator</activator>
-	
-	
-	<!-- Adds link to admin page -->
-	<extension>
-		<point>org.openmrs.admin.list</point>
-		<class>${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList</class>
-	</extension>
-	
-	<!-- Maps hibernate file's, if present -->
-	<mappingFiles>
-				
-		FaceRecognizer.hbm.xml
-				
-	</mappingFiles>
+    <!-- Module Activator -->
+    <activator>
+        ${project.parent.groupId}.${project.parent.artifactId}.FaceRecognizerActivator
+    </activator>
 
-	<!-- Internationalization -->
-	<!-- All message codes should start with ${project.parent.artifactId}. -->
-	<messages>
-		<lang>en</lang>
-		<file>messages.properties</file>
-	</messages>
-	<messages>
-		<lang>fr</lang>
-		<file>messages_fr.properties</file>
-	</messages>
-	<messages>
-		<lang>es</lang>
-		<file>messages_es.properties</file>
-	</messages>
-	<!-- /Internationalization -->
+
+    <!-- Adds link to admin page -->
+    <extension>
+        <point>org.openmrs.admin.list</point>
+        <class>
+            ${project.parent.groupId}.${project.parent.artifactId}.extension.html.AdminList
+        </class>
+    </extension>
+
+    <!-- Maps hibernate file's, if present -->
+    <mappingFiles>
+
+    </mappingFiles>
+
+    <!-- Internationalization -->
+    <!-- All message codes should start with ${project.parent.artifactId}. -->
+    <messages>
+        <lang>en</lang>
+        <file>messages.properties</file>
+    </messages>
+    <messages>
+        <lang>fr</lang>
+        <file>messages_fr.properties</file>
+    </messages>
+    <messages>
+        <lang>es</lang>
+        <file>messages_es.properties</file>
+    </messages>
+    <!-- /Internationalization -->
+    <!--<globalProperty>-->
+        <!--<property>facerecognizer.location</property>-->
+        <!--<defaultValue>/home/bahmni/</defaultValue>-->
+        <!--<description>Facerecognizer data file location. This field should end-->
+            <!--with a slash-->
+        <!--</description>-->
+    <!--</globalProperty>-->
 
 </module>
 

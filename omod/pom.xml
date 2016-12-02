@@ -14,6 +14,9 @@
     <name>Face Recognizer Module OMOD</name>
     <description>OMOD project for FaceRecognizer</description>
 
+    <properties>
+        <bahmniVersion>0.83-SNAPSHOT</bahmniVersion>
+    </properties>
     <dependencies>
 
         <!--
@@ -24,18 +27,18 @@
         </dependency>
         -->
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>javacpp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.bytedeco</groupId>
-            <artifactId>javacv</artifactId>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-webmvc</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.bytedeco</groupId>-->
+            <!--<artifactId>javacpp</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.bytedeco</groupId>-->
+            <!--<artifactId>javacv</artifactId>-->
+        <!--</dependency>-->
 
         <!-- Begin OpenMRS modules -->
 
