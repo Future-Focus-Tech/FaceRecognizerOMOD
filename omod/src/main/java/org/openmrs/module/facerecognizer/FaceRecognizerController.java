@@ -42,7 +42,7 @@ public class FaceRecognizerController {
         FaceRecognizerWrapper wrapper = new FaceRecognizerWrapper
                 ("/opt/openmrs/facerec-files/learnedData.yml");
 
-        MatVector faces = new MatVector(numberOfFaces);
+        MatVector faces = base64ToMat(facesData);
 
         for (int faceIndex = 0; faceIndex < numberOfFaces; faceIndex++) {
             BufferedImage bufferedImage = getBufferedImage(facesData[faceIndex]);
@@ -61,6 +61,12 @@ public class FaceRecognizerController {
             throws IOException {
         FaceRecognizerWrapper wrapper = new FaceRecognizerWrapper
                 ("/opt/openmrs/facerec-files/learnedData.yml");
+        MatVector faces = base64ToMat(facesData);
+        int[] predictedValues = wrapper.predict(faces);
+        return java.util.Arrays.toString(predictedValues);
+    }
+
+    private MatVector base64ToMat(String[] facesData) throws IOException {
         int numberOfFaces = facesData.length;
         MatVector faces = new MatVector(numberOfFaces);
 
@@ -69,8 +75,7 @@ public class FaceRecognizerController {
             Mat matImage = createFaceMatrix(bufferedImage);
             faces.put(faceIndex, matImage);
         }
-        int[] predictedValues = wrapper.predict(faces);
-        return java.util.Arrays.toString(predictedValues);
+        return faces;
     }
 
     private BufferedImage getBufferedImage(String imageDataUrl) throws IOException {
