@@ -24,6 +24,8 @@ public class FaceRecognizerController {
 
         Loader.load(org.bytedeco.javacpp.opencv_core.class);
         FaceRecognizer lbphFaceRecognizer = createLBPHFaceRecognizer();
+        FaceRecognizerWrapper wrapper = new FaceRecognizerWrapper
+                ("/opt/openmrs/facerec-files/learnedData.yml");
         return String.valueOf(numberOfFaces);
 
     }
