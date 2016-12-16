@@ -38,7 +38,7 @@ public class FaceRecognizerWrapper {
         return predicted;
     }
 
-    public void close() {
+    public void writeToFile() {
         lbphFaceRecognizer.save(trainedFile);
     }
 }

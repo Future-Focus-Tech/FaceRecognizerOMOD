@@ -51,7 +51,7 @@ public class FaceRecognizerController {
         }
 
         wrapper.train(faces, new Mat(mappedValues));
-        wrapper.close();
+        wrapper.writeToFile();
         return "Trained";
     }
 
