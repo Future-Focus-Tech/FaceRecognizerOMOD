@@ -1,11 +1,9 @@
 package org.openmrs.module.facerecognizer;
 
-import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
-import org.bytedeco.javacpp.opencv_face.FaceRecognizer;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -23,8 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
-import static org.bytedeco.javacpp.opencv_face.createLBPHFaceRecognizer;
-import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
 import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
 import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 
@@ -32,18 +28,17 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 @Controller
 @RequestMapping(value = "/rest/v1/facerec")
 public class FaceRecognizerController {
-    @RequestMapping(value = "echo", method = RequestMethod.POST)
-    @ResponseBody
-    public String echo(@RequestParam(value = "facesData") String[] facesData,
-                       @RequestParam(value = "mappedValues") int[] mappedValues)
-            throws IOException {
 
+    @RequestMapping(value = "train", method = RequestMethod.POST)
+    @ResponseBody
+    public String train(@RequestParam(value = "facesData") String[] facesData,
+                        @RequestParam(value = "mappedValues") int[] mappedValues)
+            throws IOException {
         int numberOfFaces = facesData.length;
         int numberOfMappedValues = mappedValues.length;
         if (numberOfFaces != numberOfMappedValues)
             return "Invalid parameters";
-        Loader.load(org.bytedeco.javacpp.opencv_core.class);
-        FaceRecognizer lbphFaceRecognizer = createLBPHFaceRecognizer();
+
         FaceRecognizerWrapper wrapper = new FaceRecognizerWrapper
                 ("/opt/openmrs/facerec-files/learnedData.yml");
 
@@ -51,16 +46,31 @@ public class FaceRecognizerController {
 
         for (int faceIndex = 0; faceIndex < numberOfFaces; faceIndex++) {
             BufferedImage bufferedImage = getBufferedImage(facesData[faceIndex]);
-            opencv_core.Mat matImage = createFaceMatrix(bufferedImage);
-            imwrite("/opt/openmrs/facerec-files/image" + mappedValues[faceIndex] + "" +
-                            ".png",
-                    matImage);
+            Mat matImage = createFaceMatrix(bufferedImage);
             faces.put(faceIndex, matImage);
         }
 
-        return String.valueOf(numberOfFaces) + " " + String.valueOf
-                (numberOfMappedValues);
+        wrapper.train(faces, new Mat(mappedValues));
+        wrapper.close();
+        return "Trained";
+    }
 
+    @RequestMapping(value = "predict", method = RequestMethod.POST)
+    @ResponseBody
+    public String predict(@RequestParam(value = "facesData") String[] facesData)
+            throws IOException {
+        FaceRecognizerWrapper wrapper = new FaceRecognizerWrapper
+                ("/opt/openmrs/facerec-files/learnedData.yml");
+        int numberOfFaces = facesData.length;
+        MatVector faces = new MatVector(numberOfFaces);
+
+        for (int faceIndex = 0; faceIndex < numberOfFaces; faceIndex++) {
+            BufferedImage bufferedImage = getBufferedImage(facesData[faceIndex]);
+            Mat matImage = createFaceMatrix(bufferedImage);
+            faces.put(faceIndex, matImage);
+        }
+        int[] predictedValues = wrapper.predict(faces);
+        return java.util.Arrays.toString(predictedValues);
     }
 
     private BufferedImage getBufferedImage(String imageDataUrl) throws IOException {
