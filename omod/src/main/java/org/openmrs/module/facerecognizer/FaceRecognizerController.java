@@ -2,9 +2,9 @@ package org.openmrs.module.facerecognizer;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.javacpp.opencv_core;
+import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
-import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_face.FaceRecognizer;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
@@ -34,11 +34,14 @@ import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
 public class FaceRecognizerController {
     @RequestMapping(value = "echo", method = RequestMethod.POST)
     @ResponseBody
-    public String echo(@RequestParam(value = "facesData") String[]
-                               facesData) throws IOException {
+    public String echo(@RequestParam(value = "facesData") String[] facesData,
+                       @RequestParam(value = "mappedValues") int[] mappedValues)
+            throws IOException {
 
         int numberOfFaces = facesData.length;
-
+        int numberOfMappedValues = mappedValues.length;
+        if (numberOfFaces != numberOfMappedValues)
+            return "Invalid parameters";
         Loader.load(org.bytedeco.javacpp.opencv_core.class);
         FaceRecognizer lbphFaceRecognizer = createLBPHFaceRecognizer();
         FaceRecognizerWrapper wrapper = new FaceRecognizerWrapper
@@ -49,12 +52,14 @@ public class FaceRecognizerController {
         for (int faceIndex = 0; faceIndex < numberOfFaces; faceIndex++) {
             BufferedImage bufferedImage = getBufferedImage(facesData[faceIndex]);
             opencv_core.Mat matImage = createFaceMatrix(bufferedImage);
-            imwrite("/opt/openmrs/facerec-files/image" + faceIndex + ".png",
+            imwrite("/opt/openmrs/facerec-files/image" + mappedValues[faceIndex] + "" +
+                            ".png",
                     matImage);
             faces.put(faceIndex, matImage);
         }
 
-        return String.valueOf(numberOfFaces);
+        return String.valueOf(numberOfFaces) + " " + String.valueOf
+                (numberOfMappedValues);
 
     }
 
