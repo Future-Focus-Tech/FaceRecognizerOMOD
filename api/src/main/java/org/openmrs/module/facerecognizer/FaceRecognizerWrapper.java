@@ -38,7 +38,7 @@ public class FaceRecognizerWrapper {
             distancePredictCollector = new MinDistancePredictCollector(20.0);
             lbphFaceRecognizer.predict(images.get(index), distancePredictCollector, 0);
             predicted[index] = distancePredictCollector.getLabel();
-            distancePredictCollector.getDist();
+            System.out.println(distancePredictCollector.getDist());
         }
         return predicted;
     }
