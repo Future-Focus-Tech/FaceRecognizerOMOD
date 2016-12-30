@@ -31,8 +31,8 @@ public class FaceRecognizerController {
 
     @RequestMapping(value = "train", method = RequestMethod.POST)
     @ResponseBody
-    public String train(@RequestParam(value = "facesData") String[] facesData,
-                        @RequestParam(value = "mappedValues") int[] mappedValues)
+    public String train(@RequestParam(value = "facesData[]") String[] facesData,
+                        @RequestParam(value = "mappedValues[]") int[] mappedValues)
             throws IOException {
         int numberOfFaces = facesData.length;
         int numberOfMappedValues = mappedValues.length;
@@ -57,7 +57,7 @@ public class FaceRecognizerController {
 
     @RequestMapping(value = "predict", method = RequestMethod.POST)
     @ResponseBody
-    public String predict(@RequestParam(value = "facesData") String[] facesData)
+    public String predict(@RequestParam(value = "facesData[]") String[] facesData)
             throws IOException {
         FaceRecognizerWrapper wrapper = new FaceRecognizerWrapper
                 ("/opt/openmrs/facerec-files/learnedData.yml");
