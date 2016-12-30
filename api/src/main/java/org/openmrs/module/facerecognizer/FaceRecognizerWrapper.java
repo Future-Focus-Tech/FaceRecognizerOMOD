@@ -3,6 +3,7 @@ package org.openmrs.module.facerecognizer;
 import org.bytedeco.javacpp.opencv_core.MatVector;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_face.FaceRecognizer;
+import org.bytedeco.javacpp.opencv_face.MinDistancePredictCollector;
 
 import java.io.File;
 
@@ -28,12 +29,16 @@ public class FaceRecognizerWrapper {
         lbphFaceRecognizer.update(faces, labels);
     }
 
-    public int[] predict(MatVector images) {
-        int noOfImages = (int) images.size();
-        int[] predicted;
+        public int[] predict(MatVector images) {
+            int noOfImages = (int) images.size();
+            int[] predicted;
+            MinDistancePredictCollector distancePredictCollector;
         predicted = new int[noOfImages];
         for (int index = 0; index < noOfImages; ++index) {
-            predicted[index] = lbphFaceRecognizer.predict(images.get(index));
+            distancePredictCollector = new MinDistancePredictCollector(20.0);
+            lbphFaceRecognizer.predict(images.get(index), distancePredictCollector, 0);
+            predicted[index] = distancePredictCollector.getLabel();
+            distancePredictCollector.getDist();
         }
         return predicted;
     }
