@@ -29,16 +29,16 @@ public class FaceRecognizerWrapper {
         lbphFaceRecognizer.update(faces, labels);
     }
 
-        public int[] predict(MatVector images) {
-            int noOfImages = (int) images.size();
-            int[] predicted;
-            MinDistancePredictCollector distancePredictCollector;
+    public int[] predict(MatVector images) {
+        int noOfImages = (int) images.size();
+        int[] predicted;
+        MinDistancePredictCollector distancePredictCollector;
         predicted = new int[noOfImages];
         for (int index = 0; index < noOfImages; ++index) {
-            distancePredictCollector = new MinDistancePredictCollector(20.0);
+            distancePredictCollector = new MinDistancePredictCollector();
             lbphFaceRecognizer.predict(images.get(index), distancePredictCollector, 0);
             predicted[index] = distancePredictCollector.getLabel();
-            System.out.println(distancePredictCollector.getDist());
+            System.out.println("Distance for " + index + " to be " + predicted[index] + " is :" + distancePredictCollector.getDist());
         }
         return predicted;
     }
