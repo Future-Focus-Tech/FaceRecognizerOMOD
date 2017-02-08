@@ -4,6 +4,7 @@ import org.bytedeco.javacpp.opencv_core;
 import org.bytedeco.javacpp.opencv_core.IplImage;
 import org.bytedeco.javacpp.opencv_core.Mat;
 import org.bytedeco.javacpp.opencv_core.MatVector;
+import org.bytedeco.javacpp.opencv_core.Size;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.OpenCVFrameConverter;
@@ -21,8 +22,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import static org.bytedeco.javacpp.opencv_core.IPL_DEPTH_8U;
-import static org.bytedeco.javacpp.opencv_imgproc.CV_BGR2GRAY;
-import static org.bytedeco.javacpp.opencv_imgproc.cvCvtColor;
+import static org.bytedeco.javacpp.opencv_core.cvCreateImage;
+import static org.bytedeco.javacpp.opencv_core.cvSize;
+import static org.bytedeco.javacpp.opencv_imgcodecs.imwrite;
+import static org.bytedeco.javacpp.opencv_imgproc.*;
 
 
 @Controller
@@ -44,12 +47,6 @@ public class FaceRecognizerController {
 
         MatVector faces = base64ToMat(facesData);
 
-        for (int faceIndex = 0; faceIndex < numberOfFaces; faceIndex++) {
-            BufferedImage bufferedImage = getBufferedImage(facesData[faceIndex]);
-            Mat matImage = createFaceMatrix(bufferedImage);
-            faces.put(faceIndex, matImage);
-        }
-
         wrapper.train(faces, new Mat(mappedValues));
         wrapper.writeToFile();
         return "Trained";
@@ -70,10 +67,19 @@ public class FaceRecognizerController {
         int numberOfFaces = facesData.length;
         MatVector faces = new MatVector(numberOfFaces);
 
+        int height = 96;
+        int width = 96;
+
         for (int faceIndex = 0; faceIndex < numberOfFaces; faceIndex++) {
             BufferedImage bufferedImage = getBufferedImage(facesData[faceIndex]);
             Mat matImage = createFaceMatrix(bufferedImage);
-            faces.put(faceIndex, matImage);
+
+            Size s = new Size(width,height);
+            Mat resized = new Mat();
+            resize(matImage,resized,s);
+
+            imwrite("/opt/openmrs/facerec-files/image" + faceIndex + ".png", resized);
+            faces.put(faceIndex, resized);
         }
         return faces;
     }
