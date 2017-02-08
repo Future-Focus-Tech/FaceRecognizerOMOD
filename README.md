@@ -7,6 +7,4 @@ functionality of [OpenMRS](http://openmrs.org/) with modules. The module is call
  and dependencies of the code.
 
 
-# Please refer
-[wiki](https://github.com/Future-Focus-Tech/FaceRecognizerOMOD/wiki) for
-more information.
+# Please refer [wiki](https://github.com/Future-Focus-Tech/FaceRecognizerOMOD/wiki) for more information.
